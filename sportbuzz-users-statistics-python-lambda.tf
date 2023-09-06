@@ -6,7 +6,7 @@ data "aws_ecr_repository" "sportbuzz-users-statistics-python" {
 resource "aws_lambda_function" "sportbuzz-users-statistics-python-lambda" {
   function_name = "sportbuzz-users-statistics-python-lambda"
   timeout       = 5 # seconds
-  image_uri     = "666519825349.dkr.ecr.us-east-1.amazonaws.com/sportbuzz-users-statistics-python:795ebcda05fc48cdf3a8acbc83c8ea564c7e5110"
+  image_uri     = "666519825349.dkr.ecr.us-east-1.amazonaws.com/sportbuzz-users-statistics-python:latest"
   package_type  = "Image"
 
   role = aws_iam_role.sportbuzz-users-statistics-function-role.arn
