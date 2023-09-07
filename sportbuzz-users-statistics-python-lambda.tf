@@ -33,3 +33,53 @@ resource "aws_iam_role" "sportbuzz-users-statistics-function-role" {
     ]
   })
 }
+
+resource "aws_cloudwatch_log_group" "sportbuzz-users-statistics-python-lambda" {
+  name              = "/aws/lambda/${aws_lambda_function.sportbuzz-users-statistics-python-lambda.function_name}"
+  retention_in_days = 14
+}
+resource "aws_iam_policy" "sportbuzz-users-statistics-python-lambda" {
+  name        = "sportbuzz-users-statistics-python-lambda"
+  path        = "/"
+  description = "IAM policy for logging from a lambda"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*",
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda-logs" {
+  role       = aws_iam_role.sportbuzz-users-statistics-lambda-role.name
+  policy_arn = aws_iam_policy.sportbuzz-users-statistics-python-lambda.arn
+}
+
+resource "aws_iam_role" "sportbuzz-users-statistics-lambda-role" {
+  name               = "sportbuzz-users-statistics-lambda-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
