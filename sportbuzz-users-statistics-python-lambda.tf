@@ -32,11 +32,11 @@ resource "aws_iam_role" "sportbuzz-users-statistics-function-role" {
 }
 
 resource "aws_cloudwatch_log_group" "sportbuzz-users-statistics-python-loggroup" {
-  name              = "/aws/lambda/${aws_lambda_function.sportbuzz-users-statistics-python-lambda.function_name}"
+  name              = "/aws/lambda/sportbuzz-users-statistics-python-loggroup"
   retention_in_days = 14
 }
 resource "aws_iam_policy" "sportbuzz-users-statistics-python-policy" {
-  name        = "sportbuzz-users-statistics-python-lambda"
+  name        = "sportbuzz-users-statistics-python-policy"
   path        = "/"
   description = "IAM policy for logging from a lambda"
   policy = <<EOF
